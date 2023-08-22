@@ -11,6 +11,7 @@ https://github.com/miltonAlan/ejemploAPI
 py -m venv .venv
 .venv\scripts\activate
 pip install -r requirements.txt
+flask run -h 192.168.56.1
 flask run
 
 URL's' POSTMAN
@@ -23,6 +24,7 @@ http://localhost:5000/datetime
 -- se debe escoger la opcion body->from-data-> key: 'img' y escoger la imagen
 -- metodo POST
 http://localhost:5000/invert
+http://192.168.56.1:5000/invert
 
 -- AZURE
 -- metodo GET
