@@ -2,6 +2,9 @@ import torch
 import torchvision.models as models
 from torchvision.transforms import functional as F
 import cv2
+# import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import os
 import json

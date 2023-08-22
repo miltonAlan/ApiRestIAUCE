@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 # Ruta del archivo JSON que contiene los resultados de detección
 json_path = './propio/test'
-json_filename = '123_jpg.rf.e18f0d9b32b083d1c988f58d59601fc5.jpg.json'  # Cambia esto al nombre correcto
+json_filename = '162_jpg.rf.9f7e91a21f18c9c06fe5f9a4a4a19e6a.jpg.json'  # Cambia esto al nombre correcto
 
 # Ruta de la carpeta que contiene las imágenes originales
 img_folder = './propio/test'

@@ -29,11 +29,13 @@ http://192.168.56.1:5000/invert
 -- AZURE
 -- metodo GET
 https://ejemplosimple.azurewebsites.net/datetime
+https://finalmineriaapi.azurewebsites.net/datetime
 
 
 -- se debe escoger la opcion body->from-data-> key: 'img' y escoger la imagen
 -- metodo POST
 https://ejemplosimple.azurewebsites.net/invert
+https://finalmineriaapi.azurewebsites.net/invert
 
 https://ejemplosimple.azurewebsites.net
 
