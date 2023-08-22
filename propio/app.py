@@ -4,6 +4,8 @@ from torchvision.transforms import functional as F
 import cv2
 # import matplotlib.pyplot as plt
 import matplotlib
+
+from propio.comprobaciones import draw_bounding_boxes
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import os
@@ -66,36 +68,51 @@ def perform_object_detection(img_folder, model_weights_path, show_image=True, sa
                         'score': score
                     }
                     result['detections'].append(detection_info)
-
             detection_results.append(result)
 
-            if save_path:
-                if not os.path.exists(save_path):
-                    os.makedirs(save_path)
-                save_filename = os.path.splitext(image_filename)[0] + '_processed.jpg'
-                save_image_path = os.path.join(save_path, save_filename)
-                plt.imshow(image)
-                ax = plt.gca()
+            # if save_path:
+            #     if not os.path.exists(save_path):
+            #         os.makedirs(save_path)
+            #     save_filename = os.path.splitext(image_filename)[0]
+            #     save_image_path = os.path.join(save_path, save_filename)
+            #     plt.imshow(image)
+            #     ax = plt.gca()
 
-                for detection in result['detections']:
-                    x, y, w, h = detection['box']
-                    rect = plt.Rectangle(
-                        (x, y), w, h, fill=False, color='red', linewidth=2)
-                    ax.add_patch(rect)
-                    ax.text(x, y, f"{detection['label']}: {detection['score']:.2f}", color='red')
+            #     for detection in result['detections']:
+            #         x, y, w, h = detection['box']
+            #         rect = plt.Rectangle(
+            #             (x, y), w, h, fill=False, color='red', linewidth=2)
+            #         ax.add_patch(rect)
+            #         ax.text(x, y, f"{detection['label']}: {detection['score']:.2f}", color='red')
 
-                plt.savefig(save_image_path)
-                save_detection_results_to_json(json_path, image_filename, detection_results)
+            #     plt.savefig(save_image_path)
+            save_detection_results_to_json(json_path, image_filename, detection_results)
+            # Reiniciar la lista detection_results para el siguiente ciclo
+            detection_results = []
+            result['detections'] = []  # Clear the list
 
-                if show_image:
-                    plt.show()
-                # plt.clf()
+
+            # if show_image:
+            #     plt.show()
+            # plt.clf()
+            # se pintan las cajas x verificacion mientra no existe cliente...
+            # Ruta del archivo JSON que contiene los resultados de detección
+            json_path = './propio/rosasPost'
+            json_filename = image_filename +'.json'  # Cambia esto al nombre correcto
+        
+            # Ruta de la carpeta que contiene las imágenes originales
+            img_folder = './propio/rosasPre'
+        
+            # Ruta de la carpeta donde se guardarán las imágenes con las cajas delimitadoras
+            output_folder = './propio/rosasPost'
+        
+            draw_bounding_boxes(json_path, json_filename, img_folder, output_folder)
 
 # Si este módulo se ejecuta directamente
 if __name__ == "__main__":
     img_folder = './propio/rosasPre'
     model_weights_path = './propio/modelo_entrenado.pth'
-    show_image = False
+    show_image = True
     save_path = './propio/rosasPost'
     json_path = './propio/rosasPost'
     perform_object_detection(img_folder, model_weights_path, show_image, save_path, json_path)   

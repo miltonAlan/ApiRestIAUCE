@@ -45,7 +45,8 @@ def propio(image_bytes, save_path, original_filename):
         print("Detection Results:")
         print(detection_results)
 
-        return jsonify({'message': 'Image saved successfully', 'image_path': image_path})
+        # return jsonify({'message': 'Image saved successfully', 'image_path': image_path})
+        return jsonify(detection_results)
     except Exception as e:
         return jsonify({'message': 'Error saving image', 'error': str(e)}), 500
 
@@ -64,7 +65,7 @@ def invoke_propio():
 # Ruta principal para mostrar un mensaje
 @app.route('/', methods=['GET'])
 def index():
-    return "¡La API se ha desplegado correctamente!"
+    return "¡La API se ha desplegado correctamentexxxxxxx!"
 
 # Configura WSGIRequestHandler para protocolo HTTP/1.1
 if __name__ == '__main__':

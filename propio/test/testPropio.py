@@ -5,10 +5,13 @@ import matplotlib.pyplot as plt
 
 # Ruta del archivo JSON que contiene los resultados de detección
 json_path = './propio/test'
-json_filename = '162_jpg.rf.9f7e91a21f18c9c06fe5f9a4a4a19e6a.jpg.json'  # Cambia esto al nombre correcto
+json_filename = 'IMG-20230822-WA0005.jpg.json'  # Cambia esto al nombre correcto
 
 # Ruta de la carpeta que contiene las imágenes originales
 img_folder = './propio/test'
+
+# Ruta de la carpeta donde se guardarán las imágenes con las cajas delimitadoras
+output_folder = './propio/test'
 
 # Lee el archivo JSON
 with open(os.path.join(json_path, json_filename), 'r') as json_file:
@@ -39,4 +42,8 @@ for result in detection_results:
         ax.add_patch(rect)
         ax.text(x, y, f"{label}: {score:.2f}", color='red')
 
-    plt.show()
+    # Guarda la imagen con las cajas delimitadoras en el mismo directorio
+    output_filename = os.path.splitext(image_filename)[0] + '_box.jpg'
+    output_path = os.path.join(output_folder, output_filename)
+    plt.savefig(output_path)
+    plt.close()
