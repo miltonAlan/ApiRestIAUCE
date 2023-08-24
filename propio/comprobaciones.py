@@ -15,7 +15,7 @@ def draw_bounding_boxes(json_path, json_filename, img_folder, output_folder):
 
         # Carga la imagen original
         image_path = os.path.join(img_folder, image_filename)
-        print(f"Loading image from: {image_path}")
+        # print(f"Loading image from: {image_path}")
         image = cv2.imread(image_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 

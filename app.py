@@ -6,6 +6,7 @@ import os
 import json
 from werkzeug.serving import WSGIRequestHandler
 from propio.app import perform_object_detection
+from propio.aruco.aruco import detect_and_draw_aruco
 
 app = Flask(__name__)
 
@@ -21,10 +22,21 @@ def get_current_datetime():
 
 def propio(image_bytes, save_path, original_filename):
     try:
+        # guardamos la imagen para su procesado posterior
         image_path = os.path.join(save_path, original_filename)
         
         with open(image_path, 'wb') as image_file:
             image_file.write(image_bytes)
+
+        print('save_path: ' + save_path)
+        print('original_filename: ' + original_filename)
+        print('combinacion: ' + save_path +'/'+ original_filename)
+
+        path_rosa = save_path +'/'+ original_filename
+        perimetro_real = 40
+
+        ratio = detect_and_draw_aruco(path_rosa, save_path, perimetro_real)
+        print("ratio validacion:" + str(ratio))
 
         # procesamos y guardamos el JSON
         img_folder = './propio/rosasPre'
@@ -32,7 +44,7 @@ def propio(image_bytes, save_path, original_filename):
         show_image = False
         save_path = './propio/rosasPost'
         json_path = './propio/rosasPost'
-        perform_object_detection(img_folder, model_weights_path, show_image, save_path, json_path)   
+        perform_object_detection(ratio, img_folder, model_weights_path, show_image, save_path, json_path)   
 
         # obtenemos el json
         # Lee el archivo JSON
@@ -43,7 +55,7 @@ def propio(image_bytes, save_path, original_filename):
 
         # Imprimir los resultados de detección
         print("Detection Results:")
-        print(detection_results)
+        # print(detection_results)
 
         # return jsonify({'message': 'Image saved successfully', 'image_path': image_path})
         return jsonify(detection_results)

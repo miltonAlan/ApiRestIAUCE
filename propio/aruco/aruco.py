@@ -32,8 +32,9 @@ def detect_and_draw_aruco(image_path, output_folder, perimetro_reals):
         largo_pixeles = np.linalg.norm(corners[0][0][1] - corners[0][0][2])
 
         # Get Width and Height of the Objects by applying the Ratio pixel to cm
-        object_width = ancho_pixeles / ratio
-        object_height = largo_pixeles / ratio
+        object_width = round(ancho_pixeles / ratio, 1)
+        object_height = round(largo_pixeles / ratio, 1)
+
 
         # Agregar texto en las coordenadas del primer marcador detectado
         marker_center = np.mean(corners[0][0], axis=0)
@@ -43,6 +44,7 @@ def detect_and_draw_aruco(image_path, output_folder, perimetro_reals):
         largo = f'ancho: {object_height}'
         cv2.putText(img, largo, (int(marker_center[0]), int(marker_center[1]) + 50),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+        return ratio
 
     else:
         print("No se detectó ningún marcador ArUco en la imagen.")
@@ -54,12 +56,11 @@ def detect_and_draw_aruco(image_path, output_folder, perimetro_reals):
     output_path = os.path.join(output_folder, os.path.basename(image_path))
     cv2.imwrite(output_path, img)
 
-    return ratio
 
 
 # Llamar a la función con la ruta de la imagen
-image_path = './propio/aruco/5.PNG'
+image_path = './propio/aruco/2.jpeg'
 output_folder = './propio/aruco/detecciones'
-perimetro_real = 100
-ratio = detect_and_draw_aruco(image_path, output_folder, perimetro_real)
-print("ratio validacion:" + str(ratio))
+perimetro_real = 40
+# ratio = detect_and_draw_aruco(image_path, output_folder, perimetro_real)
+# print("ratio validacion:" + str(ratio))
