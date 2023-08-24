@@ -15,6 +15,7 @@ def detect_and_draw_aruco(image_path, output_folder, perimetro_reals):
     corners, _, _ = cv2.aruco.detectMarkers(
         img, aruco_dict, parameters=parameters)
 
+    ratio = -1
     if len(corners) > 0:
         # Dibujar polígono en coordenadas detectadas
         int_corners = np.int0(corners)
@@ -44,7 +45,6 @@ def detect_and_draw_aruco(image_path, output_folder, perimetro_reals):
         largo = f'ancho: {object_height}'
         cv2.putText(img, largo, (int(marker_center[0]), int(marker_center[1]) + 50),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-        return ratio
 
     else:
         print("No se detectó ningún marcador ArUco en la imagen.")
@@ -54,13 +54,21 @@ def detect_and_draw_aruco(image_path, output_folder, perimetro_reals):
 
     # Guardar la imagen procesada en la carpeta de detecciones sin importar si detecta o no
     output_path = os.path.join(output_folder, os.path.basename(image_path))
+    print('llega')
     cv2.imwrite(output_path, img)
+    
+    return ratio
 
 
 
-# Llamar a la función con la ruta de la imagen
-image_path = './propio/aruco/2.jpeg'
-output_folder = './propio/aruco/detecciones'
-perimetro_real = 40
-# ratio = detect_and_draw_aruco(image_path, output_folder, perimetro_real)
-# print("ratio validacion:" + str(ratio))
+# Importar la función detect_and_draw_aruco si aún no está importada
+# from tu_modulo import detect_and_draw_aruco
+
+# output_folder = './propio/aruco/detecciones'
+# perimetro_real = 40
+
+# for i in range(1, 15):
+#     image_path = f'./propio/aruco/{i}.jpeg'
+#     ratio = detect_and_draw_aruco(image_path, output_folder, perimetro_real)
+#     print(f"Ratio validación para imagen {i}: {ratio}")
+
