@@ -3,7 +3,7 @@ import numpy as np
 import os
 
 
-def detect_and_draw_aruco(image_path, output_folder, perimetro_reals):
+def detect_and_draw_aruco(image_path, output_folder, perimetro_real):
     # Parámetros necesarios para usar aruco
     parameters = cv2.aruco.DetectorParameters_create()
     aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_5X5_50)

@@ -37,7 +37,7 @@ def perform_object_detection(ratio, img_folder, model_weights_path, show_image=T
     model.load_state_dict(torch.load(model_weights_path,
                           map_location=torch.device('cpu')))
     model.eval()
-    probabilidad = 0.92
+    probabilidad = 0.50
     detection_results = []
 
     for image_filename in os.listdir(img_folder):
