@@ -28,7 +28,7 @@ def save_detection_results_to_json(json_path, json_filename, detection_results):
 
     return json_file_path
 
-def perform_object_detection(ratio, img_folder, model_weights_path, show_image=True, save_path=None, json_path=None):
+def perform_object_detection(image_filename, ratio, img_folder, model_weights_path, show_image=True, save_path=None, json_path=None):
     classes = ['rosas', '0', '1', '2']
     model = models.detection.fasterrcnn_mobilenet_v3_large_fpn(pretrained=False)
     in_features = model.roi_heads.box_predictor.cls_score.in_features
@@ -37,41 +37,41 @@ def perform_object_detection(ratio, img_folder, model_weights_path, show_image=T
     model.load_state_dict(torch.load(model_weights_path,
                           map_location=torch.device('cpu')))
     model.eval()
-    probabilidad = 0.50
+    probabilidad = 0.75
     detection_results = []
 
-    for image_filename in os.listdir(img_folder):
-        if image_filename.endswith('.jpg') or image_filename.endswith('.png') or image_filename.endswith('.jpeg'):
-            image_path = os.path.join(img_folder, image_filename)
-            image = cv2.imread(image_path)
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-            image_tensor = F.to_tensor(image).unsqueeze(0)
-            with torch.no_grad():
-                prediction = model(image_tensor)
+    # for image_filename in os.listdir(img_folder):
+    if image_filename.endswith('.jpg') or image_filename.endswith('.png') or image_filename.endswith('.jpeg'):
+        image_path = os.path.join(img_folder, image_filename)
+        image = cv2.imread(image_path)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image_tensor = F.to_tensor(image).unsqueeze(0)
+        with torch.no_grad():
+         prediction = model(image_tensor)
 
-            boxes = prediction[0]['boxes'].cpu().numpy()
-            labels = prediction[0]['labels'].cpu().numpy()
-            scores = prediction[0]['scores'].cpu().numpy()
+         boxes = prediction[0]['boxes'].cpu().numpy()
+         labels = prediction[0]['labels'].cpu().numpy()
+         scores = prediction[0]['scores'].cpu().numpy()
 
-            result = {
-                'image_filename': image_filename,
-                'ratio' : ratio,
-                'detections': []
-            }
-            # paths imagenes
-            # print('XXXXXXXXXXXXXXXXXXXX'+image_filename)
+         result = {
+             'image_filename': image_filename,
+             'ratio' : ratio,
+             'detections': []
+         }
+         # paths imagenes
+         # print('XXXXXXXXXXXXXXXXXXXX'+image_filename)
 
-            for box, label, score in zip(boxes, labels, scores):
-                if score > probabilidad:
-                    x, y, x_max, y_max = box
-                    w, h = x_max - x, y_max - y
-                    detection_info = {
-                        'box': [x, y, w, h],
-                        'label': classes[label],
-                        'score': score
-                    }
-                    result['detections'].append(detection_info)
-            detection_results.append(result)
+        for box, label, score in zip(boxes, labels, scores):
+            if score > probabilidad:
+                x, y, x_max, y_max = box
+                w, h = x_max - x, y_max - y
+                detection_info = {
+                    'box': [x, y, w, h],
+                    'label': classes[label],
+                    'score': score
+                }
+                result['detections'].append(detection_info)
+        detection_results.append(result)
 
             # if save_path:
             #     if not os.path.exists(save_path):
@@ -89,10 +89,10 @@ def perform_object_detection(ratio, img_folder, model_weights_path, show_image=T
             #         ax.text(x, y, f"{detection['label']}: {detection['score']:.2f}", color='red')
 
             #     plt.savefig(save_image_path)
-            save_detection_results_to_json(json_path, image_filename, detection_results)
-            # Reiniciar la lista detection_results para el siguiente ciclo
-            detection_results = []
-            result['detections'] = []  # Clear the list
+        save_detection_results_to_json(json_path, image_filename, detection_results)
+        # Reiniciar la lista detection_results para el siguiente ciclo
+        detection_results = []
+        result['detections'] = []  # Clear the list
 
 
             # if show_image:
@@ -100,16 +100,16 @@ def perform_object_detection(ratio, img_folder, model_weights_path, show_image=T
             # plt.clf()
             # se pintan las cajas x verificacion mientra no existe cliente...
             # Ruta del archivo JSON que contiene los resultados de detección
-            json_path = './propio/rosasPost'
-            json_filename = image_filename +'.json'  # Cambia esto al nombre correcto
+        json_path = './propio/rosasPost'
+        json_filename = image_filename +'.json'  # Cambia esto al nombre correcto
         
             # Ruta de la carpeta que contiene las imágenes originales
-            img_folder = './propio/rosasPre'
+        img_folder = './propio/rosasPre'
         
             # Ruta de la carpeta donde se guardarán las imágenes con las cajas delimitadoras
-            output_folder = './propio/rosasPost'
+        output_folder = './propio/rosasPost'
         
-            draw_bounding_boxes(json_path, json_filename, img_folder, output_folder)
+        draw_bounding_boxes(json_path, json_filename, img_folder, output_folder)
 
 # Si este módulo se ejecuta directamente
 if __name__ == "__main__":

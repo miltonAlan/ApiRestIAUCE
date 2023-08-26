@@ -44,7 +44,7 @@ def propio(image_bytes, save_path, original_filename):
         show_image = False
         save_path = './propio/rosasPost'
         json_path = './propio/rosasPost'
-        perform_object_detection(ratio, img_folder, model_weights_path, show_image, save_path, json_path)   
+        perform_object_detection(original_filename, ratio, img_folder, model_weights_path, show_image, save_path, json_path)   
 
         # obtenemos el json
         # Lee el archivo JSON
