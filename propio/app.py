@@ -29,7 +29,7 @@ def save_detection_results_to_json(json_path, json_filename, detection_results):
     return json_file_path
 
 def perform_object_detection(image_filename, ratio, img_folder, model_weights_path, show_image=True, save_path=None, json_path=None):
-    classes = ['rosas', '0', '1', '2']
+    classes = ['rosas', '0', '1']
     model = models.detection.fasterrcnn_mobilenet_v3_large_fpn(pretrained=False)
     in_features = model.roi_heads.box_predictor.cls_score.in_features
     model.roi_heads.box_predictor = models.detection.faster_rcnn.FastRCNNPredictor(
@@ -37,7 +37,7 @@ def perform_object_detection(image_filename, ratio, img_folder, model_weights_pa
     model.load_state_dict(torch.load(model_weights_path,
                           map_location=torch.device('cpu')))
     model.eval()
-    probabilidad = 0.75
+    probabilidad = 0.60
     detection_results = []
 
     # for image_filename in os.listdir(img_folder):
