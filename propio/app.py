@@ -87,9 +87,9 @@ def perform_object_detection(image_filename, ratio, img_folder, model_weights_pa
                         if max(x1, x2) < min(x_max1, x_max2):
                             # Calcula las coordenadas del nuevo 'box' que cubre ambas clases
                             new_x = min(x1, x2) - 20  # Resta 10 píxeles al límite izquierdo
-                            new_y = min(y1, y2) - 20  # Resta 10 píxeles al límite superior
+                            new_y = min(y1, y2)  # Resta 10 píxeles al límite superior
                             new_x_max = max(x_max1, x_max2) + 20  # Suma 10 píxeles al límite derecho
-                            new_y_max = max(y_max1, y_max2) + 20  # Suma 10 píxeles al límite inferior
+                            new_y_max = max(y_max1, y_max2)  # Suma 10 píxeles al límite inferior
                             new_w = new_x_max - new_x
                             new_h = new_y_max - new_y
 
