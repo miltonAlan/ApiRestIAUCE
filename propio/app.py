@@ -71,6 +71,39 @@ def perform_object_detection(image_filename, ratio, img_folder, model_weights_pa
                     'score': score
                 }
                 result['detections'].append(detection_info)
+# Resto del código...
+
+        for box1, label1, score1 in zip(boxes, labels, scores):
+            if score1 > probabilidad:
+                x1, y1, x_max1, y_max1 = box1
+                w1, h1 = x_max1 - x1, y_max1 - y1
+
+                for box2, label2, score2 in zip(boxes, labels, scores):
+                    if label1 != label2 and score2 > probabilidad:
+                        x2, y2, x_max2, y_max2 = box2
+                        w2, h2 = x_max2 - x2, y_max2 - y2
+
+                        # Comprueba si las cajas 1 y 2 se intersectan verticalmente
+                        if max(x1, x2) < min(x_max1, x_max2):
+                            # Calcula las coordenadas del nuevo 'box' que cubre ambas clases
+                            new_x = min(x1, x2) - 20  # Resta 10 píxeles al límite izquierdo
+                            new_y = min(y1, y2) - 20  # Resta 10 píxeles al límite superior
+                            new_x_max = max(x_max1, x_max2) + 20  # Suma 10 píxeles al límite derecho
+                            new_y_max = max(y_max1, y_max2) + 20  # Suma 10 píxeles al límite inferior
+                            new_w = new_x_max - new_x
+                            new_h = new_y_max - new_y
+
+
+                            # Agrega el nuevo 'box' con label 'rosa'
+                            detection_info = {
+                                'box': [new_x, new_y, new_w, new_h],
+                                'label': 'rosa',
+                                'score': max(score1, score2)
+                            }
+                            result['detections'].append(detection_info)
+
+        # Resto del código...
+
         detection_results.append(result)
 
             # if save_path:
