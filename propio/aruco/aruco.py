@@ -15,7 +15,7 @@ def detect_and_draw_aruco(image_path, output_folder, perimetro_real):
     corners, _, _ = cv2.aruco.detectMarkers(
         img, aruco_dict, parameters=parameters)
 
-    ratio = -1
+    ratio = -1.0
     if len(corners) > 0:
         # Dibujar polígono en coordenadas detectadas
         int_corners = np.int0(corners)
@@ -47,7 +47,7 @@ def detect_and_draw_aruco(image_path, output_folder, perimetro_real):
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
 
     else:
-        print("No se detectó ningún marcador ArUco en la imagen.")
+        print("XXXXXXXXXXXXXXXXXXXXNo se detectó ningún marcador ArUco en la imagen.")
 
     # Crear la carpeta si no existe
     os.makedirs(output_folder, exist_ok=True)
@@ -64,11 +64,11 @@ def detect_and_draw_aruco(image_path, output_folder, perimetro_real):
 # Importar la función detect_and_draw_aruco si aún no está importada
 # from tu_modulo import detect_and_draw_aruco
 
-# output_folder = './propio/aruco/detecciones'
-# perimetro_real = 40
+output_folder = './propio/aruco/detecciones'
+perimetro_real = 40
 
-# for i in range(1, 15):
-#     image_path = f'./propio/aruco/{i}.jpeg'
-#     ratio = detect_and_draw_aruco(image_path, output_folder, perimetro_real)
-#     print(f"Ratio validación para imagen {i}: {ratio}")
+for i in range(1, 2):
+    image_path = f'./propio/aruco/{i}.jpeg'
+    ratio = detect_and_draw_aruco(image_path, output_folder, perimetro_real)
+    print(f"Ratio validación para imagen {i}: {ratio}")
 
